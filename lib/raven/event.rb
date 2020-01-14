@@ -96,6 +96,7 @@ module Raven
         'project' => @project,
         'logger' => @logger,
         'platform' => PLATFORM,
+        'environment' => ENV['RAILS_ENV'] || ENV['RACK_ENV'] || ''
       }
       data['culprit'] = @culprit if @culprit
       data['server_name'] = @server_name if @server_name
