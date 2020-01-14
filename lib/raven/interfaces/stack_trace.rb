@@ -15,7 +15,7 @@ module Raven
     end
 
     def to_hash
-      data = super
+      data = super.with_indifferent_access
       data['frames'] = data['frames'].map{|frame| frame.to_hash}
       data
     end
@@ -51,7 +51,7 @@ module Raven
       end
 
       def to_hash
-        data = super
+        data = super.with_indifferent_access
         data['filename'] = self.filename
         data.delete('vars') unless self.vars && !self.vars.empty?
         data.delete('pre_context') unless self.pre_context && !self.pre_context.empty?

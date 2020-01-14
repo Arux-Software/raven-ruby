@@ -5,17 +5,27 @@ module Raven
   INTERFACES = {}
 
   class Interface < Hashie::Dash
-    def initialize(attributes = {})
-      @check_required = false
-      super(attributes)
-      yield self if block_given?
-      @check_required = true
-      assert_required_properties_set!
-    end
+    def initialize(attributes = {}, &block)
+       @check_required = false
+       super(attributes)
+       block.call(self) if block
+       @check_required = true
 
-    def assert_required_properties_set!
-      super if @check_required
-    end
+       begin
+         assert_required_attributes_set!
+       rescue NoMethodError
+         assert_required_properties_set!
+       end
+
+     end
+
+     def assert_required_attributes_set!
+       super if @check_required
+     end
+
+     def assert_required_properties_set!
+       super if @check_required
+     end
 
     def self.name(value=nil)
       @interface_name = value if value

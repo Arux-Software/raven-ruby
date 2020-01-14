@@ -12,13 +12,13 @@ module Raven
       private
 
       def rescue_action_in_public_with_raven(exception)
-        evt = Raven::Event.capture_rack_exception(exception, request.env)
+        evt = Raven::Rack.capture_exception(exception, request.env)
         Raven.send(evt) if evt
         rescue_action_in_public_without_raven(exception)
       end
 
       def rescue_action_locally_with_raven(exception)
-        evt = Raven::Event.capture_rack_exception(exception, request.env)
+        evt = Raven::Rack.capture_exception(exception, request.env)
         Raven.send(evt) if evt
         rescue_action_locally_without_raven(exception)
       end
