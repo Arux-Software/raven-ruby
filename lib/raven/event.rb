@@ -24,7 +24,7 @@ module Raven
 
     attr_reader :id
     attr_accessor :project, :message, :timestamp, :level
-    attr_accessor :logger, :culprit, :server_name, :modules, :extra, :tags
+    attr_accessor :logger, :culprit, :server_name, :modules, :extra, :tags, :additional_tags_proc
 
     def initialize(options={})
       @configuration = options[:configuration] || Raven.configuration
@@ -54,6 +54,8 @@ module Raven
 
       @tags = options[:tags] || {}
       @tags.merge!(context.tags)
+
+      @additional_tags_proc = @configuration.additional_tags_proc
 
       yield self if block_given?
 
@@ -107,6 +109,11 @@ module Raven
       @interfaces.each_pair do |name, int_data|
         data[name] = int_data.to_hash
       end
+
+      if @additional_tags_proc && @additional_tags_proc.is_a?(Proc)
+        data['tags'].merge!(@additional_tags_proc.call)
+      end
+
       data
     end
 

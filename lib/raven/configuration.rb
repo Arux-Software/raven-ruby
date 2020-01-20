@@ -59,6 +59,8 @@ module Raven
 
     attr_accessor :server_name
 
+    attr_accessor :additional_tags_proc
+
     IGNORE_DEFAULT = ['ActiveRecord::RecordNotFound',
                       'ActionController::RoutingError',
                       'ActionController::InvalidAuthenticityToken',
