@@ -124,7 +124,11 @@ module Raven
     end
 
     def send_in_current_environment?
-      environments.include? current_environment
+      if environments
+        environments.include?(current_environment)
+      else
+        !%w[test cucumber development].include?(current_environment)
+      end
     end
 
   end
