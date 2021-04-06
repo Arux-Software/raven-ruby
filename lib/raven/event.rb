@@ -138,7 +138,7 @@ module Raven
         if (exc.backtrace)
           evt.interface :stack_trace do |int|
             backtrace = Backtrace.parse(exc.backtrace)
-            int.frames = backtrace.lines.reverse.first(500).map { |line|
+            int.frames = backtrace.lines.reverse.first(250).map { |line|
               int.frame do |frame|
                 frame.abs_path = line.file
                 frame.function = line.method
